@@ -3,9 +3,13 @@
   <div><label>id: </label>{{hero.id}}</div>
   <div>
     <label>name: </label>
-    <input [(ngModel)]="hero.name" placeholder="name"/>
+    <input [(ngModel)]="hero.name" placeholder="name" required/>
+    <input [(ngModel)]="hero.power" placeholder="power" type="number"/>
   </div>
   <button (click)="save()">Save</button>
   <button (click)="goBack()">Back</button>
+</div>
+<div>
+  Input parameters: {{hero?.name}}
 </div>
 

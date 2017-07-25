@@ -1,0 +1,6 @@
+<div *ngIf="hero ">
+  <p>CHOSEN HERO - {{hero?.name | uppercase}}</p>
+</div>
+<div *ngIf="!(hero)">
+  <p>None hero has been chosen, choose your hero!</p>
+</div>

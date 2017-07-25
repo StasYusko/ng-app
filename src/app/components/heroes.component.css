@@ -64,3 +64,6 @@ button.delete {
   background-color: gray !important;
   color:white;
 }
+button.disabled:hover{
+  background-color: #eee;
+}

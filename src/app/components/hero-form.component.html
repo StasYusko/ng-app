@@ -1,0 +1,38 @@
+<div class="container">
+  <h2>Hero add Form</h2>
+  <div *ngIf="!submitted">
+    <form #heroForm="ngForm" (submit)="onSubmit()">
+
+      <div class="form-group">
+        <label for="name">Name:</label>
+
+        <input type="text" class="form-control" id="name"
+               required minlength="2" maxlength="20" forbiddenName="xxx"
+               [(ngModel)]="hero.name" name="name"/>
+
+        <!--<div [hidden]="name.valid||name.untouched">Name is required</div>-->
+        <div *ngIf="formErrors.name" class="alert alert-danger">
+          {{ formErrors.name }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="power">Power:</label>
+
+        <input type="number" class="form-control" id="power" required
+               [(ngModel)]="hero.power" name="power"/>
+        <div *ngIf="formErrors.power" class="alert alert-danger">
+          {{ formErrors.power }}
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="!heroForm.form.valid">Submit</button>
+      <button type="button" (click)="cancel()">Cancel</button>
+    </form>
+  </div>
+
+  <div [hidden]="!submitted">
+    <button type="button" (click)="addHero()">Add hero</button>
+  </div>
+</div>
+

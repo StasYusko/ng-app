@@ -1,22 +1,26 @@
-import { Component, OnInit } from "@angular/core";
-import { Hero } from "app/models/hero";
-import { HeroService } from "app/services/hero.service";
-import { Router } from "@angular/router";
-
+import { Component, OnInit } from '@angular/core';
+import { Hero } from 'app/models/hero';
+import { HeroService } from 'app/services/hero.service';
+import { Router } from '@angular/router';
+import { ChosenHeroStore } from '../services/chosen-hero-store.service';
+import { ActionsService } from '../services/actions.service';
 
 @Component({
-  selector: 'my-heroes',
+  selector   : 'my-heroes',
   templateUrl: './heroes.component.html',
-  styleUrls: [ './heroes.component.css' ],
+  styleUrls  : [ './heroes.component.css' ]
 })
 
 export class HeroesComponent implements OnInit {
   selectedHero: Hero;
+  heroAdd: Hero;
   heroes: Hero[];
 
   constructor(
+    private chosenHeroStore: ChosenHeroStore,
     private heroService: HeroService,
-    private router: Router
+    private router: Router,
+    private actions: ActionsService
   ) {}
 
   ngOnInit(): void {
@@ -30,19 +34,22 @@ export class HeroesComponent implements OnInit {
         );
   }
 
-  add(name: string): void {
-    name = name.trim();
-    if (!name) { return; }
-    this.heroService.create(name)
+  newHero() {
+    this.heroAdd = new Hero();
+  }
+
+  add(hero: Hero): void {
+    if (!hero.name.trim()) { return; }
+    this.heroService.create(hero)
         .then(hero => {
           this.heroes.push(hero);
-          this.selectedHero = null;
+          this.heroAdd = null;
         });
   }
 
   delete(hero: Hero): void {
     this.heroService
-        .delete(hero.id)
+        .delete(hero)
         .then(() => {
           this.heroes = this.heroes.filter(h => h !== hero);
           if (this.selectedHero === hero) { this.selectedHero = null; }
@@ -55,7 +62,10 @@ export class HeroesComponent implements OnInit {
   }
 
   gotoDetail(): void {
-    this.router.navigate(['/detail', this.selectedHero.id]);
+    this.router.navigate([ '/detail', this.selectedHero.id ]);
   }
 
+  chooseHero() {
+    this.chosenHeroStore.push(this.actions.choose(this.selectedHero));
+  }
 }

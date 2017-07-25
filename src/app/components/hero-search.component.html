@@ -1,10 +1,13 @@
 <div id="search-component">
   <h4>Hero Search</h4>
-  <input #searchBox id="search-box" (keyup)="search(searchBox.value)" />
+  <input #searchBox id="search-box" (keyup)="search($event)"/>
+  <div *ngIf="searchBox.value.length < keysToStartSearch">input {{keysToStartSearch}} symbols to search for hero</div>
   <div>
-    <div *ngFor="let hero of heroes | async"
-         (click)="gotoDetail(hero)" class="search-result" >
-      {{hero.name}}
-    </div>
+    <!--<div *ngIf="!(searchBox.value.length < keysToStartSearch)">-->
+      <div *ngFor="let hero of heroes | async"
+           (click)="gotoDetail(hero)" class="search-result">
+        {{hero.name}}
+      </div>
+    <!--</div>-->
   </div>
 </div>

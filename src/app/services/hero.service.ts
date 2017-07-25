@@ -1,18 +1,23 @@
-import { Injectable } from "@angular/core";
-import { Hero } from "../models/hero";
+import { Injectable } from '@angular/core';
+import { Hero } from '../models/hero';
 
-import "rxjs/add/operator/toPromise";
+import 'rxjs/add/operator/toPromise';
 
-import { Headers, Http } from "@angular/http";
+import { Headers, Http } from '@angular/http';
+import { ChosenHeroStore } from './chosen-hero-store.service';
+import { ActionsService } from './actions.service';
 
 @Injectable()
 export class HeroService {
 
   private heroesUrl = 'api/heroes';
+  private headers   = new Headers({ 'Content-Type': 'application/json' });
 
-  private headers = new Headers({'Content-Type': 'application/json'});
-
-  constructor(private http: Http) { }
+  constructor(
+    private http: Http,
+    private chosenHeroStore: ChosenHeroStore,
+    private actions: ActionsService
+  ) {}
 
   getHero(id: number): Promise<Hero> {
     const url = `${this.heroesUrl}/${id}`;
@@ -29,9 +34,9 @@ export class HeroService {
                .catch(this.handleError);
   }
 
-  create(name: string): Promise<Hero> {
+  create(hero: Hero): Promise<Hero> {
     return this.http
-               .post(this.heroesUrl, JSON.stringify({name: name}), {headers: this.headers})
+               .post(this.heroesUrl, JSON.stringify(hero), { headers: this.headers })
                .toPromise()
                .then(res => res.json().data as Hero)
                .catch(this.handleError);
@@ -40,17 +45,23 @@ export class HeroService {
   update(hero: Hero): Promise<Hero> {
     const url = `${this.heroesUrl}/${hero.id}`;
     return this.http
-               .put(url, JSON.stringify(hero), {headers: this.headers})
+               .put(url, JSON.stringify(hero), { headers: this.headers })
                .toPromise()
-               .then(() => hero)
+               .then(() => {
+                 this.chosenHeroStore.push(this.actions.update(hero));
+                 return hero
+               })
                .catch(this.handleError);
   }
 
-  delete(id: number): Promise<void> {
-    const url = `${this.heroesUrl}/${id}`;
-    return this.http.delete(url, {headers: this.headers})
+  delete(hero: Hero): Promise<void> {
+    const url = `${this.heroesUrl}/${hero.id}`;
+    return this.http.delete(url, { headers: this.headers })
                .toPromise()
-               .then(() => null)
+               .then(() => {
+                 this.chosenHeroStore.push(this.actions.delete(hero));
+                 return null;
+               })
                .catch(this.handleError);
   }
 
