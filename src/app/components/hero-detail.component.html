@@ -1,4 +1,4 @@
-<div *ngIf="hero">
+<!--<div *ngIf="hero">
   <h2>{{hero.name}} details!</h2>
   <div><label>id: </label>{{hero.id}}</div>
   <div>
@@ -11,5 +11,59 @@
 </div>
 <div>
   Input parameters: {{hero?.name}}
-</div>
+</div>-->
 
+<h2>Hero Detail</h2>
+<h3><i>FormControl in a FormGroup</i></h3>
+<form [formGroup]="heroForm" novalidate (submit)="save()">
+  <div class="form-group">
+    <label class="center-block">Name:
+      <input class="form-control" formControlName="name">
+    </label>
+  </div>
+
+  <div class="form-group">
+    <label class="center-block">Power:
+      <input class="form-control" formControlName="power" type="number">
+    </label>
+  </div>
+
+  <div formArrayName="addresses" class="well well-lg">
+    <div *ngFor="let address of addresses.controls; let i=index" [formGroupName]="i">
+      <!--<div formGroupName="address" class="well well-lg">-->
+
+      <h4>Address #{{i+1}}:</h4>
+      <h4><button type="button" (click)="removeAddress(i)">-</button></h4>
+      <div class="form-group">
+        <label class="center-block">Street:
+          <input class="form-control" formControlName="street">
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label class="center-block">City:
+          <input class="form-control" formControlName="city">
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label class="center-block">State:
+          <select class="form-control" formControlName="state">
+            <option *ngFor="let state of states" [value]="state">{{state}}</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label class="center-block">Zip Code:
+          <input class="form-control" formControlName="zip">
+        </label>
+      </div>
+      <!--</div>-->
+    </div>
+  </div>
+  <button type="submit">Save</button>
+</form>
+<button (click)="addAddress()" type="button">Add an Address</button>
+<p>Form value: {{ heroForm.value | json }}</p>
+<p>Hero value: {{ hero | json }}</p>
