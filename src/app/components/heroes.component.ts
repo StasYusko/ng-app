@@ -15,6 +15,7 @@ export class HeroesComponent implements OnInit {
   selectedHero: Hero;
   heroAdd: Hero;
   heroes: Hero[];
+  text: string;
 
   constructor(
     private chosenHeroStore: ChosenHeroStore,

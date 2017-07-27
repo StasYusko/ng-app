@@ -20,6 +20,7 @@ import { HeroFormComponent } from './components/hero-form.component';
 import { HeroAction } from './actions/choose-hero.action';
 import { ChosenHeroStore } from './services/chosen-hero-store.service';
 import { ActionsService } from './services/actions.service';
+import { FroalaEditorModule, FroalaViewModule} from 'angular-froala-wysiwyg';
 
 @NgModule({
   imports     : [
@@ -27,6 +28,8 @@ import { ActionsService } from './services/actions.service';
     FormsModule,
     HttpModule,
     InMemoryWebApiModule.forRoot(InMemoryDataService),
+    FroalaEditorModule.forRoot(),
+    FroalaViewModule.forRoot(),
     AppRoutingModule
   ],
   declarations: [
