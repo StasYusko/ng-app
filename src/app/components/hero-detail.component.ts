@@ -13,7 +13,6 @@ import { Address, Hero } from '../models/hero';
   styleUrls  : ['./hero-detail.component.css']
 })
 export class HeroDetailComponent implements OnInit, OnChanges {
-  //hero: Hero;
   @Input() hero: Hero;
 
   heroForm: FormGroup;
@@ -34,6 +33,7 @@ export class HeroDetailComponent implements OnInit, OnChanges {
           return this.heroService.getHero(+params.get('id'))
         })
         .subscribe(hero => {
+          console.log(hero);
           this.hero = hero;
           this.updateForm();
         });
@@ -67,7 +67,7 @@ export class HeroDetailComponent implements OnInit, OnChanges {
 
     const addressesDeepCopy: Address[] = formModel
       .addresses
-      .map(ar => Object.assign({}, ar));
+      .map((ar: Address) => Object.assign({}, ar));
 
     const hero: Hero = {
       id       : this.hero.id,
@@ -88,14 +88,9 @@ export class HeroDetailComponent implements OnInit, OnChanges {
       addresses: this.fb.array([]),
       power    : ''
     });
-
-    this.heroForm.valueChanges
-        .subscribe(data => this.onValueChanged(data));
-
-    this.onValueChanged();
   }
 
-  setAddresses(addresses: Address[]) {
+  setAddresses(addresses: Address[] = []) {
     const addressFGs       = addresses.map(address => this.fb.group(address));
     const addressFormArray = this.fb.array(addressFGs);
     this.heroForm.setControl('addresses', addressFormArray);

@@ -3,13 +3,14 @@ import { HeroAction } from '../actions/choose-hero.action';
 import { Subject } from 'rxjs/Subject';
 import * as consts from '../utils/consts';
 import { Hero } from '../models/hero';
+import { Subscription } from 'rxjs/Subscription';
 
 @Injectable()
 export class ChosenHeroStore implements OnInit, OnDestroy {
   private id: number;
   private subjectAction = new Subject<HeroAction>();
   private output        = new Subject<Hero>();
-  private subscriptions = [];
+  private subscriptions = new Array<Subscription>();
           heroAction    = this.subjectAction.asObservable();
           chosenHero    = this.output.asObservable();
 

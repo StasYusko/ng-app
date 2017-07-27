@@ -17,7 +17,6 @@ import { TestDirective } from './directives/test.directive';
 import { ChosenHeroComponent } from './components/chosen-hero.component';
 import { ChosenHeroService } from './services/chosen-hero.service';
 import { HeroFormComponent } from './components/hero-form.component';
-import { HeroAction } from './actions/choose-hero.action';
 import { ChosenHeroStore } from './services/chosen-hero-store.service';
 import { ActionsService } from './services/actions.service';
 
@@ -38,10 +37,10 @@ import { ActionsService } from './services/actions.service';
     HeroesComponent,
     HeroSearchComponent,
     TestDirective,
-    HeroFormComponent,
+    HeroFormComponent
   ],
-  providers   : [ HeroService, ChosenHeroService, ChosenHeroStore, ActionsService ],
-  bootstrap   : [ AppComponent ]
+  providers   : [HeroService, ChosenHeroService, ChosenHeroStore, ActionsService],
+  bootstrap   : [AppComponent]
 })
 
 export class AppModule {
