@@ -29,8 +29,14 @@
     </div>
   </div>
   <div class="right-area">
-    <h2><p>Text Editor</p></h2>
-    <div *ngIf="text">{{text}}</div>
-    <div [froalaEditor]>EDDDDDITORRRR </div>
+    <h2>Text Editor</h2>
+    <!--<div [innerHTML]="text"></div>-->
+    <div>{{text}}</div>
+
+    <simple-tiny
+      [elementId]="'my-editor-id'"
+      (onEditorKeyup)="keyupHandler($event)"
+    >
+    </simple-tiny>
   </div>
 </div>

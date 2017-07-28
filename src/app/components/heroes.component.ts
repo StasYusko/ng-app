@@ -2,13 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Hero } from 'app/models/hero';
 import { HeroService } from 'app/services/hero.service';
 import { Router } from '@angular/router';
-import { ChosenHeroStore } from '../services/chosen-hero-store.service';
-import { ActionsService } from '../services/actions.service';
+import { ChosenHeroService } from '../services/chosen-hero.service';
 
 @Component({
   selector   : 'my-heroes',
   templateUrl: './heroes.component.html',
-  styleUrls  : [ './heroes.component.css' ]
+  styleUrls  : ['./heroes.component.css']
 })
 
 export class HeroesComponent implements OnInit {
@@ -18,10 +17,9 @@ export class HeroesComponent implements OnInit {
   text: string;
 
   constructor(
-    private chosenHeroStore: ChosenHeroStore,
     private heroService: HeroService,
     private router: Router,
-    private actions: ActionsService
+    private chosenHeroservice: ChosenHeroService
   ) {}
 
   ngOnInit(): void {
@@ -63,10 +61,16 @@ export class HeroesComponent implements OnInit {
   }
 
   gotoDetail(): void {
-    this.router.navigate([ '/detail', this.selectedHero.id ]);
+    this.router.navigate(['/detail', this.selectedHero.id]);
+
   }
 
-  chooseHero() {
-    this.chosenHeroStore.push(this.actions.choose(this.selectedHero));
+  chooseHero(): void {
+    this.chosenHeroservice.chooseHero(this.selectedHero);
+  }
+
+  keyupHandler(event: string): void {
+    console.log(`WHAT? ${event.toString()}`);
+    this.text = event.toString();
   }
 }

@@ -17,10 +17,9 @@ import { TestDirective } from './directives/test.directive';
 import { ChosenHeroComponent } from './components/chosen-hero.component';
 import { ChosenHeroService } from './services/chosen-hero.service';
 import { HeroFormComponent } from './components/hero-form.component';
-import { HeroAction } from './actions/choose-hero.action';
 import { ChosenHeroStore } from './services/chosen-hero-store.service';
 import { ActionsService } from './services/actions.service';
-import { FroalaEditorModule, FroalaViewModule} from 'angular-froala-wysiwyg';
+import { SimpleTinymceComponent } from './components/simple-tinymce.component';
 
 @NgModule({
   imports     : [
@@ -28,8 +27,6 @@ import { FroalaEditorModule, FroalaViewModule} from 'angular-froala-wysiwyg';
     FormsModule,
     HttpModule,
     InMemoryWebApiModule.forRoot(InMemoryDataService),
-    FroalaEditorModule.forRoot(),
-    FroalaViewModule.forRoot(),
     AppRoutingModule
   ],
   declarations: [
@@ -41,12 +38,15 @@ import { FroalaEditorModule, FroalaViewModule} from 'angular-froala-wysiwyg';
     HeroSearchComponent,
     TestDirective,
     HeroFormComponent,
+    SimpleTinymceComponent
   ],
-  providers   : [ HeroService, ChosenHeroService, ChosenHeroStore, ActionsService ],
-  bootstrap   : [ AppComponent ]
+  providers   : [HeroService, ChosenHeroService, ChosenHeroStore, ActionsService],
+  bootstrap   : [AppComponent]
 })
 
 export class AppModule {
 }
 
-
+/*,
+ "../node_modules/tinymce/skins/lightgray/skin.min.css",
+ "../node_modules/tinymce/skins/lightgray/content.min.css"*/
