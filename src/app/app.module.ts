@@ -20,6 +20,7 @@ import { HeroFormComponent } from './components/hero-form.component';
 import { ChosenHeroStore } from './services/chosen-hero-store.service';
 import { ActionsService } from './services/actions.service';
 import { SimpleTinymceComponent } from './components/simple-tinymce.component';
+import { EmitService } from './services/EmitService';
 
 @NgModule({
   imports     : [
@@ -40,7 +41,7 @@ import { SimpleTinymceComponent } from './components/simple-tinymce.component';
     HeroFormComponent,
     SimpleTinymceComponent
   ],
-  providers   : [HeroService, ChosenHeroService, ChosenHeroStore, ActionsService],
+  providers   : [HeroService, ChosenHeroService, ChosenHeroStore, ActionsService, EmitService],
   bootstrap   : [AppComponent]
 })
 

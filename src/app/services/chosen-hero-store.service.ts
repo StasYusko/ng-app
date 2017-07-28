@@ -7,6 +7,7 @@ import { Hero } from '../models/hero';
 @Injectable()
 export class ChosenHeroStore implements OnInit, OnDestroy {
   private id: number;
+  public text: any;
   private subjectAction = new Subject<HeroAction>();
   private output        = new Subject<Hero>();
   private subscriptions = [];

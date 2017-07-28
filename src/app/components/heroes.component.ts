@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, NgZone, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Hero } from 'app/models/hero';
 import { HeroService } from 'app/services/hero.service';
 import { Router } from '@angular/router';
@@ -12,24 +12,43 @@ import { Subject } from 'rxjs/Subject';
   styleUrls  : ['./heroes.component.css']
 })
 
-export class HeroesComponent implements OnInit {
+export class HeroesComponent implements OnInit, OnChanges {
   selectedHero: Hero;
   heroAdd: Hero;
   heroes: Hero[];
-
-  textContainer: string;
-
   private stream = new Subject<string>();
-
+  @Input() textContainer: string;
   constructor(
     private heroService: HeroService,
     private router: Router,
     private chosenHeroStore: ChosenHeroStore,
-    private actions: ActionsService
+    private actions: ActionsService,
+    private zone: NgZone
   ) {}
 
   ngOnInit(): void {
     this.getHeroes();
+
+    this.stream.asObservable()
+        .debounceTime(300)
+        .distinctUntilChanged()
+        .subscribe(text => {
+          //this.zone.run(() => this.textContainer = text);
+          this.textContainer = text;
+        });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log("CHANGES");
+  }
+
+  keyupHandler(s: string): void {
+    this.stream.next(s);
+
+    setTimeout(()=>{console.log(this.textContainer)}, 1000);
+
+    //Observable.of(this.stream.next(s)).subscribe(data => console.log(data));
+    //this.stream.next(s as string);
   }
 
   getHeroes(): void {
@@ -37,12 +56,6 @@ export class HeroesComponent implements OnInit {
         .then(heroes =>
           this.heroes = heroes
         );
-    this.stream.asObservable().debounceTime(100).distinctUntilChanged()
-      .subscribe(o => {
-        this.textContainer = o;
-        console.log(`In Observable ${o}`);
-      });
-    this.stream.subscribe(()=> console.log(`log text: ${this.textContainer}`));
   }
 
   newHero() {
@@ -79,11 +92,5 @@ export class HeroesComponent implements OnInit {
 
   chooseHero(): void {
     this.chosenHeroStore.push(this.actions.choose(this.selectedHero));
-  }
-
-  keyupHandler(s: string): void {
-    console.log(`WHAT? ${s}`);
-    //this.textContainer = s;
-    this.stream.next(s)
   }
 }
