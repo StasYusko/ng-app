@@ -1,5 +1,6 @@
 <h2>My Heroes</h2>
 
+<div>{{textContainer}}</div>
 <div class="wrapper">
   <div class="left-area">
     <hero-form (submitHero)="add($event)"></hero-form>
@@ -30,13 +31,15 @@
   </div>
   <div class="right-area">
     <h2>Text Editor</h2>
-    <!--<div [innerHTML]="text"></div>-->
-    <div>{{text}}</div>
 
-    <simple-tiny
-      [elementId]="'my-editor-id'"
-      (onEditorKeyup)="keyupHandler($event)"
-    >
-    </simple-tiny>
+    <div [innerHTML]="textContainer"></div>
+
+    <div>
+      <simple-tiny
+        [elementId]="'my-editor-id'"
+        (onEditorKeyup)="keyupHandler($event)"
+      >
+      </simple-tiny>
+    </div>
   </div>
 </div>

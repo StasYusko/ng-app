@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import 'tinymce';
 import 'tinymce/themes/modern';
 import 'tinymce/plugins/table';
@@ -8,23 +8,23 @@ declare let tinymce: any;
 
 @Component({
   selector: 'simple-tiny',
-  template: `<div><textarea id="{{elementId}}"></textarea></div>`
+  template: `<textarea id="{{elementId}}"></textarea>`
 })
-export class SimpleTinymceComponent implements AfterViewInit, OnDestroy {
+export class SimpleTinymceComponent implements OnInit, OnDestroy {
 
   @Input() elementId: String;
-  @Output() onEditorKeyup = new EventEmitter<any>();
+  @Output() onEditorKeyup = new EventEmitter<string>();
 
   editor;
 
-  ngAfterViewInit() {
+  ngOnInit() {
     tinymce.init({
       selector: '#' + this.elementId,
-      toolbar: 'newdocument | undo redo | styleselect | bold italic | link image',
-      menu: {},
+      toolbar : 'newdocument | undo redo | styleselect | bold italic | link image',
+      menu    : {},
       plugins : ['link', 'paste', 'table'],
       skin_url: 'assets/skins/lightgray',
-      theme: 'modern',
+      theme   : 'modern',
       branding: false,
       setup   : editor => {
         this.editor = editor;

@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Hero } from 'app/models/hero';
 import { HeroService } from 'app/services/hero.service';
 import { Router } from '@angular/router';
-import { ChosenHeroService } from '../services/chosen-hero.service';
+import { ChosenHeroStore } from '../services/chosen-hero-store.service';
+import { ActionsService } from '../services/actions.service';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector   : 'my-heroes',
@@ -14,12 +16,16 @@ export class HeroesComponent implements OnInit {
   selectedHero: Hero;
   heroAdd: Hero;
   heroes: Hero[];
-  text: string;
+
+  textContainer: string;
+
+  private stream = new Subject<string>();
 
   constructor(
     private heroService: HeroService,
     private router: Router,
-    private chosenHeroservice: ChosenHeroService
+    private chosenHeroStore: ChosenHeroStore,
+    private actions: ActionsService
   ) {}
 
   ngOnInit(): void {
@@ -31,6 +37,12 @@ export class HeroesComponent implements OnInit {
         .then(heroes =>
           this.heroes = heroes
         );
+    this.stream.asObservable().debounceTime(100).distinctUntilChanged()
+      .subscribe(o => {
+        this.textContainer = o;
+        console.log(`In Observable ${o}`);
+      });
+    this.stream.subscribe(()=> console.log(`log text: ${this.textContainer}`));
   }
 
   newHero() {
@@ -66,11 +78,12 @@ export class HeroesComponent implements OnInit {
   }
 
   chooseHero(): void {
-    this.chosenHeroservice.chooseHero(this.selectedHero);
+    this.chosenHeroStore.push(this.actions.choose(this.selectedHero));
   }
 
-  keyupHandler(event: string): void {
-    console.log(`WHAT? ${event.toString()}`);
-    this.text = event.toString();
+  keyupHandler(s: string): void {
+    console.log(`WHAT? ${s}`);
+    //this.textContainer = s;
+    this.stream.next(s)
   }
 }
